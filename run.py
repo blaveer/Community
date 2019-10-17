@@ -11,7 +11,7 @@ if __name__ == '__main__':
               "420111001010006"]
     for account in accounts:
         driver = webdriver.Chrome()
-        driver.get("http://10.104.26.51/geoshgl/")
+        driver.get("http://10.104.26.51/geoshgl/") #10.105.42.33
         time.sleep(2)
         driver.find_element_by_name("user").clear()
         driver.find_element_by_name("user").send_keys(account)
@@ -19,6 +19,17 @@ if __name__ == '__main__':
         driver.find_element_by_name("pwd").send_keys("123")
         driver.find_element_by_id("btnLogin").click()
         time.sleep(10)
+        driver.find_element_by_id("menu_465").click()
+        time.sleep(10)
+        unit
+        for everyUnit in unit:
+            everyUnit.click()
+            driver.find_element_by_id("").click()
+            rooms
+            for room in rooms:
+                room.click()
+
+
 
 
 
