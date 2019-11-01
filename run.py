@@ -67,11 +67,6 @@ if __name__ == "__main__":
                         print("   点击单元户成功:第" + str(counter_xiaoqu) + "个小区")
                         time.sleep(2)
                         driver.switch_to.frame("iframe")
-                        # try:
-                        #     WebDriverWait(driver, 20).until(lambda driver: driver.switch_to.frame("iframe"))
-                        # except:
-                        #     print("请检查网络：转换Frame出错")
-                        # else:
 
                         time.sleep(1)
                         ul = driver.find_element_by_xpath("//*[@class='xlyt-btnbox']/ul")
@@ -131,15 +126,7 @@ if __name__ == "__main__":
                                                         room + 1) + "个房间")
                                                 driver.switch_to.default_content()
                                                 driver.switch_to.frame("lhgfrm_FWDialog")
-                                                # try:
-                                                #     WebDriverWait(driver, 20).until(
-                                                #         lambda driver: driver.switch_to.default_content())
-                                                #     WebDriverWait(driver, 20).until(
-                                                #         lambda driver: driver.switch_to.frame("lhgfrm_FWDialog"))
-                                                # except:
-                                                #     print("请检查网络：在转向具体的房间Frame时候出错")
-                                                # else:
-
+                                                #region 更改具体房间的代码
                                                 time.sleep(2)
                                                 driver.find_element_by_id("btnRoomFormEdit").click()
                                                 print("            点击编辑房间按钮成功")
@@ -174,6 +161,7 @@ if __name__ == "__main__":
                                                 time.sleep(2)
                                                 # TODO 叉掉保存后的那个按钮
                                                 time.sleep(10)  ##
+                                                # endregion
                                                 driver.switch_to.default_content()
                                                 driver.find_element_by_id("lhgdg_xbtn_FWDialog").click()
                                                 # driver.switch_to.default_content()
@@ -182,46 +170,52 @@ if __name__ == "__main__":
                                                 print("         第" + str(counter_xiaoqu) + "个小区的第" + str(
                                                     counter_danyuanhao) + "单元号的第" + str(
                                                     room + 1) + "个房间出错")
-                                            driver.switch_to.frame("MFrame")
-                                            driver.switch_to.frame("iframe")
-                                            time.sleep(3)
-                                            # print("结束了一个房间的任务")
-                                            print(
-                                                "         第" + str(counter_xiaoqu) + "个小区的第" + str(
-                                                    counter_danyuanhao) + "单元号的第" + str(
-                                                    room + 1) + "个房间遍历完成")
-                                            # 结束了一个房间的任务
-                                            print(counter_room)
-
-                                            if (int(counter_room)) % 4 == 0:
-                                                right = driver.find_elements_by_class_name("fht-scroll")
-                                                right[1].click()
+                                            finally:
+                                                driver.switch_to.frame("MFrame")
+                                                driver.switch_to.frame("iframe")
+                                                time.sleep(3)
+                                                # print("结束了一个房间的任务")
+                                                print(
+                                                    "         第" + str(counter_xiaoqu) + "个小区的第" + str(
+                                                        counter_danyuanhao) + "单元号的第" + str(
+                                                        room + 1) + "个房间遍历完成")
+                                                # 结束了一个房间的任务
+                                                print(counter_room)
+                                                if num_of_each_floor>4:
+                                                    if (int(counter_room)) % 4 == 0:
+                                                        right = driver.find_elements_by_class_name("fht-scroll")
+                                                        right[1].click()
+                                                        time.sleep(1)
+                                                        counter_right_time = counter_right_time + 1
+                                                    # if counter_right_time == time_left_click:
+                                                    if counter_room % num_of_each_floor == 0:
+                                                        for counter_left_time in range(0, counter_right_time):
+                                                            left = driver.find_elements_by_class_name("fht-scroll")
+                                                            time.sleep(1)
+                                                            left[0].click()
+                                                            counter_room = 0
+                                                room = room + 1
+                                                counter_room = counter_room + 1
+                                                rooms = driver.find_elements_by_class_name("xhroom-xbox")
                                                 time.sleep(1)
-                                                counter_right_time = counter_right_time + 1
-                                            # if counter_right_time == time_left_click:
-                                            if counter_room % num_of_each_floor == 0:
-                                                for counter_left_time in range(0, counter_right_time):
-                                                    left = driver.find_elements_by_class_name("fht-scroll")
-                                                    time.sleep(1)
-                                                    left[0].click()
-                                                    counter_room = 1
-                                            room = room + 1
-                                            counter_room = counter_room + 1
-                                            rooms = driver.find_elements_by_class_name("xhroom-xbox")
-                                            time.sleep(1)
 
                                         print("      第" + str(counter_xiaoqu) + "个小区的第" + str(
                                             counter_danyuanhao) + "个单元号遍历完成")
                                         counter_danyuanhao = counter_danyuanhao + 1
                                         # 结束了一片的任务
                         print("用户(" + account + ")下第" + str(counter_xiaoqu) + "个小区遍历完成")
-                        counter_xiaoqu = counter_xiaoqu + 1
+
                         time.sleep(3)
                         driver.switch_to.default_content()
                         driver.switch_to.frame("MFrame")
+                        counter_xiaoqu = counter_xiaoqu + 1
                     except:
+                        print("在执行该小区时候出错")
+                        driver.switch_to.default_content()
+                        driver.switch_to.frame("MFrame")
                         counter_xiaoqu=counter_xiaoqu+1
                         continue
+
         print("用户(" + account + ")已全部遍历完成")
         driver.quit()
     print("全部账号扫描过一次了")
