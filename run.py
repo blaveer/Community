@@ -3,6 +3,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support.wait import WebDriverWait
 import time
+import random
 
 if __name__ == "__main__":
 
@@ -13,6 +14,8 @@ if __name__ == "__main__":
                 "420111001010005",
                 "420111001010006"]
     for account in accounts:
+        base=random.randint(60,75)
+
         driver = webdriver.Chrome()
         driver.get("http://10.104.26.51/geoshgl/")  # 10.105.42.33
         time.sleep(2)
@@ -116,72 +119,94 @@ if __name__ == "__main__":
                                         counter_right_time = 0
                                         counter_room = 1
                                         while room < roomNum:
-                                            try:
-                                                # region 房间点击部分
-                                                rooms[room].click()
-                                                # time.sleep(3)
-                                                print(
-                                                    "         正在遍历第" + str(counter_xiaoqu) + "个小区的第" + str(
-                                                        counter_danyuanhao) + "单元号下的第" + str(
-                                                        room + 1) + "个房间")
-                                                driver.switch_to.default_content()
-                                                driver.switch_to.frame("lhgfrm_FWDialog")
-                                                #region 更改具体房间的代码
-                                                time.sleep(2)
-                                                driver.find_element_by_id("btnRoomFormEdit").click()
-                                                print("            点击编辑房间按钮成功")
-                                                areaOfConstruction = float(
-                                                    driver.find_element_by_id("txtJzArea").get_attribute(
-                                                        "value"))
-                                                areaOfDwell = float(
-                                                    driver.find_element_by_id("txtJzMJ").get_attribute("value"))
-                                                if areaOfConstruction > 0:
-                                                    if areaOfDwell > 0:
-                                                        print("               无需该更面积")
+                                            IsPass = random.randint(0, 100)
+                                            if IsPass < base:
+                                                try:
+                                                    # region 房间点击部分
+                                                    rooms[room].click()
+                                                    # time.sleep(3)
+                                                    print(
+                                                        "         正在遍历第" + str(counter_xiaoqu) + "个小区的第" + str(
+                                                            counter_danyuanhao) + "单元号下的第" + str(
+                                                            room + 1) + "个房间")
+                                                    driver.switch_to.default_content()
+                                                    driver.switch_to.frame("lhgfrm_FWDialog")
+                                                    # region 更改具体房间的代码
+                                                    time.sleep(2)
+                                                    driver.find_element_by_id("btnRoomFormEdit").click()
+                                                    print("            点击编辑房间按钮成功")
+                                                    areaOfConstruction = float(
+                                                        driver.find_element_by_id("txtJzArea").get_attribute(
+                                                            "value"))
+                                                    areaOfDwell = float(
+                                                        driver.find_element_by_id("txtJzMJ").get_attribute("value"))
+                                                    if areaOfConstruction > 0:
+                                                        if areaOfDwell > 0:
+                                                            print("               无需该更面积")
+                                                        else:
+                                                            driver.find_element_by_id("txtJzMJ").send_keys(
+                                                                str(areaOfConstruction))
+                                                            print("               改改了居住面积")
                                                     else:
-                                                        driver.find_element_by_id("txtJzMJ").send_keys(
-                                                            str(areaOfConstruction))
-                                                        print("               改改了居住面积")
-                                                else:
-                                                    if areaOfDwell > 0:
-                                                        driver.find_element_by_id("txtJzArea").send_keys(
-                                                            str(areaOfDwell))
-                                                        print("               更改了建筑面积")
-                                                    else:
-                                                        driver.find_element_by_id("txtJzMJ").send_keys("30.0")
-                                                        driver.find_element_by_id("txtJzArea").send_keys("30.0")
-                                                        print("               俩都改为30了")
-                                                options_select_capsule = driver.find_element_by_id(
-                                                    "sltjnf")  # 胶囊房
-                                                options_select_capsule_items = Select(
-                                                    options_select_capsule).options
-                                                options_select_capsule_items[1].click()
-                                                print("               更改为胶囊房成功")
-                                                driver.find_element_by_id("btnxRoomSave").click()
-                                                time.sleep(2)
-                                                # TODO 叉掉保存后的那个按钮
-                                                time.sleep(10)  ##
-                                                # endregion
-                                                driver.switch_to.default_content()
-                                                driver.find_element_by_id("lhgdg_xbtn_FWDialog").click()
-                                                # driver.switch_to.default_content()
-                                                # endregion
-                                            except:
-                                                print("         第" + str(counter_xiaoqu) + "个小区的第" + str(
-                                                    counter_danyuanhao) + "单元号的第" + str(
-                                                    room + 1) + "个房间出错")
-                                            finally:
-                                                driver.switch_to.frame("MFrame")
-                                                driver.switch_to.frame("iframe")
-                                                time.sleep(3)
-                                                # print("结束了一个房间的任务")
-                                                print(
-                                                    "         第" + str(counter_xiaoqu) + "个小区的第" + str(
+                                                        if areaOfDwell > 0:
+                                                            driver.find_element_by_id("txtJzArea").send_keys(
+                                                                str(areaOfDwell))
+                                                            print("               更改了建筑面积")
+                                                        else:
+                                                            driver.find_element_by_id("txtJzMJ").send_keys("30.0")
+                                                            driver.find_element_by_id("txtJzArea").send_keys("30.0")
+                                                            print("               俩都改为30了")
+                                                    options_select_capsule = driver.find_element_by_id(
+                                                        "sltjnf")  # 胶囊房
+                                                    options_select_capsule_items = Select(
+                                                        options_select_capsule).options
+                                                    options_select_capsule_items[1].click()
+                                                    print("               更改为胶囊房成功")
+                                                    driver.find_element_by_id("btnxRoomSave").click()
+                                                    time.sleep(2)
+                                                    # TODO 叉掉保存后的那个按钮
+                                                    time.sleep(10)  ##
+                                                    # endregion
+                                                    driver.switch_to.default_content()
+                                                    driver.find_element_by_id("lhgdg_xbtn_FWDialog").click()
+                                                    # driver.switch_to.default_content()
+                                                    # endregion
+                                                except:
+                                                    print("         第" + str(counter_xiaoqu) + "个小区的第" + str(
                                                         counter_danyuanhao) + "单元号的第" + str(
-                                                        room + 1) + "个房间遍历完成")
-                                                # 结束了一个房间的任务
+                                                        room + 1) + "个房间出错")
+                                                finally:
+                                                    driver.switch_to.frame("MFrame")
+                                                    driver.switch_to.frame("iframe")
+                                                    time.sleep(3)
+                                                    # print("结束了一个房间的任务")
+                                                    print(
+                                                        "         第" + str(counter_xiaoqu) + "个小区的第" + str(
+                                                            counter_danyuanhao) + "单元号的第" + str(
+                                                            room + 1) + "个房间遍历完成")
+                                                    # 结束了一个房间的任务
+                                                    print(counter_room)
+                                                    if num_of_each_floor > 4:
+                                                        if (int(counter_room)) % 4 == 0:
+                                                            right = driver.find_elements_by_class_name("fht-scroll")
+                                                            right[1].click()
+                                                            time.sleep(1)
+                                                            counter_right_time = counter_right_time + 1
+                                                        # if counter_right_time == time_left_click:
+                                                        if counter_room % num_of_each_floor == 0:
+                                                            for counter_left_time in range(0, counter_right_time):
+                                                                left = driver.find_elements_by_class_name("fht-scroll")
+                                                                time.sleep(1)
+                                                                left[0].click()
+                                                                counter_room = 0
+                                                    room = room + 1
+                                                    counter_room = counter_room + 1
+                                                    rooms = driver.find_elements_by_class_name("xhroom-xbox")
+                                                    time.sleep(1)
+                                            else:
+                                                print("跳过了一个房间")
                                                 print(counter_room)
-                                                if num_of_each_floor>4:
+                                                if num_of_each_floor > 4:
                                                     if (int(counter_room)) % 4 == 0:
                                                         right = driver.find_elements_by_class_name("fht-scroll")
                                                         right[1].click()
