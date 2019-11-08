@@ -5,30 +5,15 @@ from selenium.webdriver.support.wait import WebDriverWait
 import time
 import random
 
-# if __name__ == "__main__":
-#     driver = webdriver.Ie()
-#     driver.get("http://10.104.26.51/geoshgl/")  # 10.105.42.33
-#     time.sleep(5)
-#     account = "420111001010003"
-#     driver.find_element_by_name("user").clear()
-#     driver.find_element_by_name("user").send_keys(account)
-#     driver.find_element_by_name("pwd").clear()
-#     driver.find_element_by_name("pwd").send_keys("123")
-#     driver.find_element_by_name("pwd").send_keys(Keys.ENTER)
-#     print("登陆成功:账号" + account)
-
 if __name__ == "__main__":
 
-    accounts = [                                            # "420111001010001",
-                "420111001010002",
-                "420111001010003",
-                "420111001010004",
+    accounts = [
                 "420111001010005",
                 "420111001010006"]
     for account in accounts:
         base=random.randint(60,75)
 
-        driver = webdriver.Ie()
+        driver = webdriver.Chrome()
         driver.get("http://10.104.26.51/geoshgl/")  # 10.105.42.33
         time.sleep(2)
         driver.find_element_by_name("user").clear()
@@ -37,6 +22,7 @@ if __name__ == "__main__":
         driver.find_element_by_name("pwd").send_keys("123")
         driver.find_element_by_name("pwd").send_keys(Keys.ENTER)
         print("登陆成功:账号" + account)
+        time.sleep(3)
         #time.sleep(6)
         try:
             menu_info_get = WebDriverWait(driver, 20).until(lambda driver: driver.find_element_by_id("menu_465"))
@@ -147,27 +133,35 @@ if __name__ == "__main__":
                                                     time.sleep(2)
                                                     driver.find_element_by_id("btnRoomFormEdit").click()
                                                     print("            点击编辑房间按钮成功")
-                                                    areaOfConstruction = float(
-                                                        driver.find_element_by_id("txtJzArea").get_attribute(
-                                                            "value"))
-                                                    areaOfDwell = float(
-                                                        driver.find_element_by_id("txtJzMJ").get_attribute("value"))
-                                                    if areaOfConstruction > 0:
-                                                        if areaOfDwell > 0:
-                                                            print("               无需该更面积")
+                                                    try:
+                                                        areaOfConstruction = float(
+                                                            driver.find_element_by_id("txtJzArea").get_attribute(
+                                                                "value"))
+
+                                                        areaOfDwell = float(
+                                                            driver.find_element_by_id("txtJzMJ").get_attribute("value"))
+                                                        if areaOfConstruction > 0:
+                                                            if areaOfDwell > 0:
+                                                                print("               无需该更面积")
+                                                            else:
+                                                                driver.find_element_by_id("txtJzMJ").send_keys(
+                                                                    str(areaOfConstruction))
+                                                                print("               改改了居住面积")
                                                         else:
-                                                            driver.find_element_by_id("txtJzMJ").send_keys(
-                                                                str(areaOfConstruction))
-                                                            print("               改改了居住面积")
-                                                    else:
-                                                        if areaOfDwell > 0:
-                                                            driver.find_element_by_id("txtJzArea").send_keys(
-                                                                str(areaOfDwell))
-                                                            print("               更改了建筑面积")
-                                                        else:
-                                                            driver.find_element_by_id("txtJzMJ").send_keys("30.0")
-                                                            driver.find_element_by_id("txtJzArea").send_keys("30.0")
-                                                            print("               俩都改为30了")
+                                                            if areaOfDwell > 0:
+                                                                driver.find_element_by_id("txtJzArea").send_keys(
+                                                                    str(areaOfDwell))
+                                                                print("               更改了建筑面积")
+                                                            else:
+                                                                driver.find_element_by_id("txtJzMJ").send_keys("30.0")
+                                                                driver.find_element_by_id("txtJzArea").send_keys("30.0")
+                                                                print("               俩都改为30了")
+                                                    except:
+                                                        driver.find_element_by_id("txtJzMJ").clear()
+                                                        driver.find_element_by_id("txtJzArea").clear()
+                                                        driver.find_element_by_id("txtJzMJ").send_keys("30.0")
+                                                        driver.find_element_by_id("txtJzArea").send_keys("30.0")
+                                                        print("               俩都改为30了")
                                                     options_select_capsule = driver.find_element_by_id(
                                                         "sltjnf")  # 胶囊房
                                                     options_select_capsule_items = Select(
